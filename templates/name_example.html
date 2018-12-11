@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block navigation %}
+ {{ super() }}
+{% endblock %}
+{% block content1 %}
+ <br>
+
+ <h1>Registered Users</h1>
+ <ul>
+    {% for n in users %}
+        <li>{{ n.username }}
+                {% if n.username == username %}
+                    <b>(You)</b>
+                {% endif %}
+    </li>
+        
+    {% endfor %}
+ </ul>
+ 
+ {% endblock %}

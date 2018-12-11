@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block navigation %}
+ {{ super() }}
+{% endblock %}
+{% block content1 %}
+ <br>
+ 
+ <h1>Years You have searched</h1>
+ <ul>
+    {% for s in searches %}
+        <li>
+                <form method="POST" action="{{'/update/'~s.id}}" id="form">
+                    {{ form2.hidden_tag() }}
+                    {{ form2.searchStartYear.label() }}{{ form2.searchStartYear(value=s["searchStartYear"]) }}
+                    {{ form2.submit.label }}{{ form2.submit() }}
+                </form>
+                
+                <form method="POST" action="{{'/delete/'~s.id}}" id="form">
+                    {{ form.hidden_tag() }}
+                    {{ form.submit.label }}{{ form.submit() }}
+                </form>
+            
+                
+        </li>
+        
+    {% endfor %}
+ </ul>
+ 
+ {% endblock %}

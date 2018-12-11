@@ -1,0 +1,23 @@
+<html>
+<title>
+</title>
+<body>
+      {% block navigation %}
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('all_users') }}">Registered Users</a></li>
+            <li><a href="{{ url_for('user_bookmarks') }}">My Bookmarks</a></li>
+            <li><a href="{{ url_for('user_likes') }}">My liked Movies</a></li>
+            <li><a href="{{ url_for('all_searches') }}">My searched Years</a></li>
+            <li><a href="{{ url_for('logout') }}">Sign Out {{current_user.username}}</a></li>
+            {% else %}
+            <li><a href="{{ url_for('login') }}">Sign In</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+            {% endif %}
+         </ul>
+      {% endblock %}
+      {% block content1 %}
+      {% endblock content1 %}
+</body>
+</html>
