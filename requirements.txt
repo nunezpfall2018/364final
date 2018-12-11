@@ -6,8 +6,7 @@ Flask-Migrate==2.1.1
 Flask-RESTful==0.3.6
 Flask-SQLAlchemy==2.2
 Flask-WTF==0.14.2
-gunicorn==19.9.0
-Jinja2==2.9.6u
+Jinja2==2.9.6
 jsonschema==2.6.0
 marshmallow==2.16.3
 psycopg2==2.7.3.1
@@ -15,5 +14,9 @@ requests==2.19.1
 SQLAlchemy==1.1.14
 Werkzeug==0.14.1
 WTForms==2.2.1
+gunicorn
+flask_script
+
+
 
 

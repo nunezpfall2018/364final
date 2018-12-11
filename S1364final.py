@@ -35,7 +35,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hardtoguessstringfromsi364thisisnotsupersecurebutitsok'
 
 # TODO: Update this to your database URI
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or "postgresql://priscillamnunez@localhost:5432/final"
+print(os.environ.get('DATABASE_URL'))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or "postgresql://priscillamnunez@localhost:5432/finals"
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -294,7 +295,7 @@ def bookmark_movie():
     newbookmark = Bookmark(comic=comic, userId=current_user.id)
     db.session.add(newbookmark)
     db.session.commit()
-    return redirect(url_for(user_bookmarks))
+    return redirect(url_for("user_bookmarks"))
 
 
 @app.route('/users')
