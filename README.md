@@ -1,4 +1,7 @@
-# SI 364 - Fall 2018 - #Nunez, Priscilla - Final Project 
+# SI 364 - Fall 2018
+Nunez, Priscilla 
+
+Final Project  https://s1364final.herokuapp.com (Heroku URL)
 
 ## Marvel Commic Collection App
 This app allows a user to register and be able to search for marvels movies collection for a particular year.
