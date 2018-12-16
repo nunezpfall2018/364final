@@ -1,9 +1,8 @@
-###############################
-####### SETUP (OVERALL) #######
-###############################
+#** Nunez, Priscilla
+#** Fall 2018 Final
+#** SI 364
 
-## Import statements
-# Import statements
+#** Import statements
 import os
 import json
 import requests
@@ -19,13 +18,13 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.types import JSON
 
-# Imports for login management
+#** Imports for login management
 from flask_login import LoginManager, login_required, logout_user, login_user, UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask_script import Manager, Shell
 
-## App setup code
+#** App setup code
 app = Flask(__name__)
 
 
@@ -34,7 +33,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'hardtoguessstringfromsi364thisisnotsupersecurebutitsok'
 
-# TODO: Update this to your database URI
+#** database URI
 print(os.environ.get('DATABASE_URL'))
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or "postgresql://priscillamnunez@localhost:5432/finals"
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
@@ -42,27 +41,21 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.debug = True
 
-## All app.config values
+#** All app.config values
 
-# Login configurations setup
+#** Login configurations setup
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'login'
-login_manager.init_app(app) # set up login manager
+login_manager.init_app(app) #** sets up login manager
 
 manager = Manager(app)
 
-## Statements for db setup (and manager setup if using Manager)
+#** Statements for db setup (and manager setup if using Manager)
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
-
-
-
-######################################
-######## HELPER FXNS (If any) ########
-######################################
 
 def is_valid_year(form, field):
     if int(field.data) >=1990 and int(field.data) <=2019:
@@ -74,14 +67,14 @@ def is_year(form, field):
         return True
     raise ValidationError('Please Enter a valid year')
 
-## DB load function
-## Necessary for behind the scenes login manager that comes with flask_login capabilities! Won't run without this.
+#** DB load function
+#** Necessary for behind the scenes login manager that comes with flask_login capabilities! Won't run without this.
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id)) # returns User object or None
+    return User.query.get(int(user_id)) #** returns User object or None
 
 def get_or_create_user(username, password):
-    """Always returns a Gif instance"""
+    """Always returns a user instance"""
     user = User.query.filter_by(username=username).first()
     if not user:
         user = User(username=username, password=password)
@@ -90,7 +83,7 @@ def get_or_create_user(username, password):
     return user
 
 def get_or_create_search(searchStartYear, userId):
-    """Always returns a Gif instance"""
+    """Always returns a search instance"""
     search = SearchYear.query.filter_by(searchStartYear=searchStartYear).first()
     if not search:
         search = SearchYear(searchStartYear=searchStartYear)
@@ -101,14 +94,9 @@ def get_or_create_search(searchStartYear, userId):
     db.session.commit()
     return search  
 
+#** MODELS 
 
-
-
-##################
-##### MODELS #####
-##################
-
-# Special model for users to log in
+#** Special model for users to log in
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -155,16 +143,14 @@ UserSearch = db.Table('user_searches', db.Column('userId', db.Integer,db.Foreign
                                     db.Column('search_year_id', db.Integer,db.ForeignKey('searches.id'),
                                                 nullable=False))
 
-###################
-###### FORMS ######
-###################
+#** Forms
 
 class SearchForm(FlaskForm):
     searchStartYear = StringField("Please enter a search start year for marvels movie collections.",validators=[Required(),is_year, is_valid_year])
     submit = SubmitField()
 
 class EditSearchForm(FlaskForm):
-    searchStartYear = StringField("",validators=[Required(), is_valid_year])
+    searchStartYear = StringField("",validators=[Required(), is_valid_year, is_year])
     submit = SubmitField('Update')
 
 class LikeForm(FlaskForm):
@@ -187,7 +173,7 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField("Confirm Password:",validators=[Required()])
     submit = SubmitField('Register User')
 
-    #Additional checking methods for the form
+    #** Additional checking methods for the form
     def validate_email(self,field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered.')
@@ -199,9 +185,8 @@ class RegistrationForm(FlaskForm):
 class DeleteSearchForm(FlaskForm):
     submit = SubmitField("Delete")
 
-#######################
-###### VIEW FXNS ######
-#######################
+
+#** VIEW FXNS 
 
 @app.route('/login',methods=["GET","POST"])
 def login():
@@ -379,12 +364,7 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
-
-
-## Code to run the application...
-
-# Put the code to do so here!
-# NOTE: Make sure you include the code you need to initialize the database structure when you run the application!
+#** Code to run the application
 if __name__=='__main__':
     db.create_all()
     app.run(debug = True)
